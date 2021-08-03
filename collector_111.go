@@ -22,8 +22,8 @@ type StatsCollector struct {
 }
 
 // NewStatsCollector creates a new StatsCollector.
-func NewStatsCollector(dbName string, sg StatsGetter) *StatsCollector {
-	labels := prometheus.Labels{"db_name": dbName}
+func NewStatsCollector(dbLabels map[string]string, sg StatsGetter) *StatsCollector {
+	labels := prometheus.Labels(dbLabels)
 	return &StatsCollector{
 		sg: sg,
 		maxOpenDesc: prometheus.NewDesc(
