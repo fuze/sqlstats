@@ -1,3 +1,5 @@
+// +build go1.11,!go1.15
+
 package sqlstats
 
 import (
@@ -15,8 +17,11 @@ func TestMultipleDB(t *testing.T) {
 	db2, err := sql.Open("sqlite3", ":memory:")
 	assert.NoError(t, err)
 
-	c1 := NewStatsCollector("db1", db1)
-	c2 := NewStatsCollector("db2", db2)
+	label1 := map[string]string{"name": "db1"}
+	label2 := map[string]string{"name": "db2"}
+
+	c1 := NewStatsCollector(label1, db1)
+	c2 := NewStatsCollector(label2, db2)
 
 	assert.NoError(t, prometheus.Register(c1))
 	assert.NoError(t, prometheus.Register(c2))
